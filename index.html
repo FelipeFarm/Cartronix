@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartronix Auto Works Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: Client-First style sections (padding-global > container-large), dark steel hero, light concrete body, safety-yellow reserved for primary actions */
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --ink:#0F1D2B; --muted:#4E5C6A; --line:#CDD4DC;
+  --steel:#15293D; --steel-2:#1E3852; --on-steel:#F1F4F7; --on-steel-muted:#A9B8C7;
+  --accent:#F2B705; --accent-ink:#141414; --accent-text:#7E5C00;
+  --ph-a:#DDE3E9; --ph-b:#D2D9E0; --ph-ink:#4E5C6A;
+  --note:#2F6FEB; --note-ink:#FFFFFF;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --radius:6px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C151E; --surface:#132230; --ink:#E7ECF1; --muted:#9AA9B8; --line:#26394B;
+  --steel:#070F17; --steel-2:#10202F; --on-steel:#E7ECF1; --on-steel-muted:#94A5B6;
+  --accent:#F5C02A; --accent-ink:#141414; --accent-text:#F5C02A;
+  --ph-a:#182A3A; --ph-b:#1D3244; --ph-ink:#9AA9B8;
+  --note:#5B8FF5; --note-ink:#0C151E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C151E; --surface:#132230; --ink:#E7ECF1; --muted:#9AA9B8; --line:#26394B;
+  --steel:#070F17; --steel-2:#10202F; --on-steel:#E7ECF1; --on-steel-muted:#94A5B6;
+  --accent:#F5C02A; --accent-ink:#141414; --accent-text:#F5C02A;
+  --ph-a:#182A3A; --ph-b:#1D3244; --ph-ink:#9AA9B8;
+  --note:#5B8FF5; --note-ink:#0C151E; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.0625rem;line-height:1.6;margin:0}
+a{color:inherit}
+h1,h2,h3{font-family:var(--f-display);text-transform:uppercase;margin:0;text-wrap:balance;letter-spacing:.005em}
+p{margin:0}
+.padding-global{padding-inline:clamp(16px,4vw,40px)}
+.container-large{max-width:1200px;margin-inline:auto}
+.padding-section{padding-block:clamp(56px,8vw,104px)}
+.heading-style-h1{font-size:clamp(2.6rem,6.2vw,4.9rem);font-weight:800;line-height:.94}
+.heading-style-h2{font-size:clamp(2rem,4.2vw,3.1rem);font-weight:800;line-height:1}
+.heading-style-h3{font-size:1.45rem;font-weight:700;line-height:1.1}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-text);font-weight:500}
+.text-muted{color:var(--muted)}
+.max-w{max-width:62ch}
+
+/* Buttons */
+.button{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--f-display);font-weight:700;font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:.8rem 1.4rem;border-radius:var(--radius);border:2px solid var(--accent);background:var(--accent);color:var(--accent-ink);cursor:pointer;transition:transform .15s ease,background .15s ease}
+.button:hover{transform:translateY(-1px)}
+.button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.notes-toggle:focus-visible{outline:3px solid var(--note);outline-offset:2px}
+.button.is-secondary{background:transparent;color:inherit;border-color:currentColor}
+.button.is-small{font-size:.95rem;padding:.5rem .95rem}
+.button-group{display:flex;flex-wrap:wrap;gap:.75rem}
+.text-link{font-family:var(--f-display);font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:2px;font-size:1rem}
+.icon{width:1.1em;height:1.1em;flex:none}
+
+/* Placeholders */
+.ph{position:relative;border-radius:var(--radius);background:repeating-linear-gradient(135deg,var(--ph-a) 0 14px,var(--ph-b) 14px 28px);color:var(--ph-ink);display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;font-family:var(--f-mono);font-size:.78rem;line-height:1.4;max-width:100%}
+.ph span{background:var(--surface);padding:.35rem .6rem;border-radius:4px;border:1px dashed var(--line)}
+.on-steel .ph{--ph-a:#1B324A;--ph-b:#213B56;--ph-ink:#C3D0DC}
+.on-steel .ph span{background:#10202F;border-color:#34506C}
+.fill{color:var(--accent-text);font-family:var(--f-mono);font-size:.9em;background:color-mix(in srgb,var(--accent) 16%,transparent);padding:0 .3em;border-radius:3px}
+.on-steel .fill{color:var(--accent)}
+
+/* Build notes */
+.wf-note{display:none;position:absolute;top:8px;left:8px;z-index:5;font-family:var(--f-mono);font-size:.7rem;line-height:1.3;background:var(--note);color:var(--note-ink);padding:.3rem .5rem;border-radius:4px;max-width:calc(100% - 16px)}
+body.show-notes .wf-note{display:block}
+body.show-notes [data-section]{outline:1px dashed var(--note);outline-offset:-1px}
+[data-section]{position:relative}
+.notes-toggle{position:fixed;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:60;font-family:var(--f-mono);font-size:.75rem;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:.5rem .85rem;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+@media (min-width:768px){.notes-toggle{bottom:calc(20px + env(safe-area-inset-bottom,0px))}}
+
+
+/* Photos */
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.section_hero{position:relative;isolation:isolate}
+.hero_bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hero_overlay{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(10,22,34,.94) 0%,rgba(10,22,34,.82) 45%,rgba(10,22,34,.45) 100%),linear-gradient(0deg,rgba(10,22,34,.6),rgba(10,22,34,0) 40%)}
+@media (max-width:767px){.hero_overlay{background:rgba(10,22,34,.84)}}
+.hero_grid{grid-template-columns:minmax(0,760px)!important;padding-block:clamp(72px,11vw,150px)}
+.hero_trust{background:rgba(42,70,97,.7);border-color:rgba(42,70,97,.7)}
+.trust_item{background:rgba(16,32,47,.78);backdrop-filter:blur(4px)}
+
+/* Top bar + nav */
+.section_topbar{background:var(--steel);color:var(--on-steel-muted);font-size:.85rem}
+.topbar_inner{display:flex;flex-wrap:wrap;gap:.35rem 1.5rem;justify-content:space-between;padding-block:.5rem}
+.topbar_inner b{color:var(--on-steel);font-weight:500}
+.navbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--surface);border-bottom:1px solid var(--line)}
+.navbar_inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:.75rem}
+.navbar_logo{width:170px;height:48px;font-size:.7rem;flex:none}
+.navbar_menu{display:none;gap:1.5rem;list-style:none;margin:0;padding:0;font-family:var(--f-display);font-weight:600;font-size:1.05rem;letter-spacing:.05em;text-transform:uppercase}
+.navbar_menu a{text-decoration:none}
+.navbar_menu a:hover{color:var(--accent-text)}
+.navbar_ctas{display:flex;gap:.6rem;align-items:center}
+.navbar_phone{display:none;font-family:var(--f-display);font-weight:700;font-size:1.1rem;text-decoration:none;letter-spacing:.03em}
+.navbar_burger{display:inline-flex;flex-direction:column;gap:5px;padding:10px;background:none;border:1px solid var(--line);border-radius:var(--radius);cursor:pointer}
+.navbar_burger i{display:block;width:20px;height:2px;background:var(--ink)}
+@media (min-width:992px){.navbar_menu{display:flex}.navbar_burger{display:none}.navbar_phone{display:inline-flex}}
+@media (max-width:479px){.navbar_ctas .button{display:none}}
+
+/* Hero */
+.section_hero{background:var(--steel);color:var(--on-steel);overflow:hidden}
+.hero_grid{display:grid;gap:2.5rem;align-items:center;padding-block:clamp(48px,7vw,88px)}
+@media (min-width:992px){.hero_grid{grid-template-columns:1.1fr .9fr}}
+.hero_content{display:grid;gap:1.4rem;min-width:0}
+.hero_content .eyebrow{color:var(--accent)}
+.hero_lede{color:var(--on-steel-muted);font-size:1.15rem;max-width:52ch}
+.hero_media{aspect-ratio:4/3.4;width:100%}
+.hero_trust{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#2A4661;border:1px solid #2A4661;border-radius:var(--radius);overflow:hidden;margin-top:.5rem}
+@media (min-width:640px){.hero_trust{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.trust_item{background:var(--steel-2);padding:.8rem .9rem;display:grid;gap:.1rem}
+.trust_value{font-family:var(--f-display);font-weight:800;font-size:1.5rem;line-height:1.1;color:var(--on-steel)}
+.trust_label{font-size:.78rem;color:var(--on-steel-muted);line-height:1.3}
+
+/* Service strip */
+.section_strip{background:var(--accent);color:var(--accent-ink);overflow:hidden}
+.strip_track{display:flex;gap:2rem;white-space:nowrap;padding-block:.85rem;font-family:var(--f-display);font-weight:800;font-size:1.3rem;letter-spacing:.06em;text-transform:uppercase;animation:strip 40s linear infinite;width:max-content}
+.strip_track span::after{content:"/";margin-left:2rem;opacity:.45}
+@keyframes strip{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.strip_track{animation:none}}
+
+/* Intro */
+.intro_grid{display:grid;gap:2.5rem}
+@media (min-width:992px){.intro_grid{grid-template-columns:1fr 1fr;align-items:start}}
+.intro_text{display:grid;gap:1.1rem;min-width:0}
+.symptoms{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.symptom{display:flex;gap:.9rem;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:1rem 1.1rem;font-weight:500}
+.symptom_tag{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:5.5rem}
+
+/* Services */
+.section_services{background:var(--surface);border-block:1px solid var(--line)}
+.section_head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:1.25rem;margin-bottom:2.5rem}
+.section_head > div{display:grid;gap:.75rem;min-width:0}
+.services_grid{display:grid;gap:1.25rem}
+@media (min-width:640px){.services_grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:992px){.services_grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.service_card{display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;min-width:0}
+.service_card .ph{aspect-ratio:16/10;border-radius:0}
+.service_body{display:flex;flex-direction:column;gap:.7rem;padding:1.3rem 1.3rem 1.5rem;flex:1}
+.service_body p{color:var(--muted);font-size:1rem}
+.service_body .text-link{margin-top:auto;align-self:flex-start}
+.service_card.is-tesla{background:var(--steel);color:var(--on-steel);border-color:var(--steel)}
+.service_card.is-tesla p{color:var(--on-steel-muted)}
+
+/* Why */
+.why_grid{display:grid;gap:2.5rem}
+@media (min-width:992px){.why_grid{grid-template-columns:.85fr 1.15fr}}
+.why_head{display:grid;gap:1rem;align-content:start;min-width:0}
+@media (min-width:992px){.why_head{position:sticky;top:110px}}
+.why_list{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.why_item{display:grid;gap:.35rem;padding:1.3rem 0;border-bottom:1px solid var(--line)}
+@media (min-width:640px){.why_item{grid-template-columns:15rem 1fr;gap:1.5rem}}
+.why_item p{color:var(--muted)}
+
+/* Builds */
+.section_builds{background:var(--steel);color:var(--on-steel)}
+.section_builds .eyebrow{color:var(--accent)}
+.section_builds .text-muted{color:var(--on-steel-muted)}
+.builds_grid{display:grid;gap:1rem;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:992px){.builds_grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.build_tile{display:grid;gap:.55rem;min-width:0}
+.build_tile .ph{aspect-ratio:4/5}
+.build_meta{font-family:var(--f-mono);font-size:.75rem;color:var(--on-steel-muted);letter-spacing:.04em}
+.build_title{font-family:var(--f-display);font-weight:700;font-size:1.15rem;text-transform:uppercase}
+
+/* Process */
+.process_grid{display:grid;gap:1.25rem;counter-reset:step}
+@media (min-width:768px){.process_grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.process_step{display:grid;gap:.6rem;padding:1.6rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);align-content:start}
+.process_num{font-family:var(--f-display);font-weight:800;font-size:3rem;line-height:1;color:var(--accent-text)}
+.process_step p{color:var(--muted)}
+.process_cta{margin-top:2rem}
+
+/* Reviews */
+.section_reviews{background:var(--surface);border-block:1px solid var(--line)}
+.rating_badge{display:flex;align-items:center;gap:.9rem;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:.8rem 1.1rem}
+.rating_score{font-family:var(--f-display);font-weight:800;font-size:2.2rem;line-height:1}
+.stars{color:var(--accent);letter-spacing:.1em;font-size:1.1rem}
+.reviews_grid{display:grid;gap:1.25rem}
+@media (min-width:768px){.reviews_grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.review_card{display:flex;flex-direction:column;gap:1rem;padding:1.5rem;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);min-width:0}
+.review_text{font-size:1.05rem}
+.review_author{margin-top:auto;font-size:.9rem;color:var(--muted);display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+
+/* Brand */
+.brand_grid{display:grid;gap:2.5rem;align-items:center}
+@media (min-width:992px){.brand_grid{grid-template-columns:1fr 1fr}}
+.brand_grid .ph{aspect-ratio:5/4}
+.brand_text{display:grid;gap:1rem;min-width:0}
+.brand_text p{color:var(--muted)}
+.brand_text .brand_lead{color:var(--ink);font-size:1.2rem;font-weight:500}
+
+/* Quote */
+.section_quote{background:var(--steel);color:var(--on-steel)}
+.quote_grid{display:grid;gap:2.5rem}
+@media (min-width:992px){.quote_grid{grid-template-columns:.8fr 1.2fr;align-items:start}}
+.quote_info{display:grid;gap:1.2rem;min-width:0}
+.quote_info .eyebrow{color:var(--accent)}
+.quote_info p{color:var(--on-steel-muted)}
+.quote_phone{display:grid;gap:.25rem;padding:1.25rem;border:1px solid #2A4661;border-radius:var(--radius);background:var(--steel-2)}
+.quote_phone strong{font-family:var(--f-display);font-size:1.9rem;font-weight:800;line-height:1.1}
+.quote_hours{font-size:.9rem;color:var(--on-steel-muted)}
+.quote_form{background:var(--surface);color:var(--ink);border-radius:var(--radius);padding:clamp(1.25rem,3vw,2rem);display:grid;gap:1rem;grid-template-columns:repeat(6,minmax(0,1fr))}
+.field{display:grid;gap:.35rem;grid-column:span 6;min-width:0}
+@media (min-width:640px){.field.is-half{grid-column:span 3}.field.is-third{grid-column:span 2}}
+.field label{font-size:.85rem;font-weight:600}
+.field label em{color:var(--muted);font-style:normal;font-weight:400}
+.field input,.field select,.field textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:.7rem .8rem;width:100%}
+.field textarea{min-height:110px;resize:vertical}
+.field_hint{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.form_footer{grid-column:span 6;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+.form_note{font-size:.85rem;color:var(--muted);max-width:40ch}
+.form_success{grid-column:span 6;font-size:.95rem;padding:.8rem 1rem;border-radius:var(--radius);background:color-mix(in srgb,var(--accent) 18%,transparent);border:1px solid var(--accent)}
+
+.section_quote{position:relative;isolation:isolate;overflow:hidden}
+.quote_bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.quote_overlay{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(10,22,34,.93) 0%,rgba(10,22,34,.85) 40%,rgba(10,22,34,.7) 100%)}
+.quote_phone{background:rgba(16,32,47,.8);backdrop-filter:blur(4px)}
+
+/* FAQ */
+.faq_grid{display:grid;gap:2.5rem}
+@media (min-width:992px){.faq_grid{grid-template-columns:.8fr 1.2fr}}
+.faq_head{display:grid;gap:1rem;align-content:start}
+.faq_list{border-top:2px solid var(--ink)}
+.faq_item{border-bottom:1px solid var(--line)}
+.faq_item summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:1.15rem 0;font-weight:600;font-size:1.08rem}
+.faq_item summary::-webkit-details-marker{display:none}
+.faq_item summary::after{content:"+";font-family:var(--f-display);font-size:1.8rem;line-height:1;color:var(--accent-text);transition:transform .2s ease}
+.faq_item[open] summary::after{transform:rotate(45deg)}
+.faq_answer{padding:0 0 1.25rem;color:var(--muted);max-width:62ch;display:grid;gap:.6rem}
+
+/* Final CTA */
+.section_cta{background:var(--accent);color:var(--accent-ink)}
+.cta_inner{display:grid;gap:1.4rem;justify-items:start;padding-block:clamp(56px,7vw,88px)}
+.cta_inner p{max-width:56ch;font-size:1.15rem}
+.cta_inner .button{background:var(--accent-ink);color:#FFFFFF;border-color:var(--accent-ink)}
+.cta_inner .button.is-secondary{background:transparent;color:var(--accent-ink)}
+.cta_tagline{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+
+/* Footer */
+.footer{background:var(--steel);color:var(--on-steel-muted);font-size:.95rem;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+@media (min-width:768px){.footer{padding-bottom:0}}
+.footer_grid{display:grid;gap:2rem;padding-block:56px 32px}
+@media (min-width:768px){.footer_grid{grid-template-columns:1.4fr 1fr 1fr}}
+.footer_grid h3{color:var(--on-steel);font-size:1.1rem;margin-bottom:.8rem}
+.footer_grid ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.footer_grid a{text-decoration:none}
+.footer_grid a:hover{color:var(--on-steel)}
+.footer_logo{width:170px;height:48px;font-size:.7rem;margin-bottom:1rem}
+.footer_bottom{border-top:1px solid #2A4661;padding-block:1.25rem;display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between;font-size:.82rem}
+
+/* Mobile sticky bar */
+.mobile_bar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:.6rem 12px calc(.6rem + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line)}
+.mobile_bar .button{justify-content:center;font-size:1rem;padding:.7rem .5rem}
+.mobile_bar .button.is-secondary{color:var(--ink)}
+@media (min-width:768px){.mobile_bar{display:none}}
+</style>
+</head>
+<body>
+
+
+<!-- ============ TOP BAR ============ -->
+<div class="section_topbar" data-section>
+  <div class="padding-global"><div class="container-large topbar_inner">
+    <span>1234 Sample Street, Houston, TX 77000</span>
+    <span>Mon to Fri 8 AM to 6 PM &middot; Sat 8 AM to 2 PM &middot; Sun closed</span>
+  </div></div>
+</div>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" data-section>
+  <span class="wf-note">Navbar component (symbol) &middot; sticky &middot; collapses at Tablet</span>
+  <div class="padding-global"><div class="container-large navbar_inner">
+    <a href="#top" class="navbar_logo ph" aria-label="Cartronix Auto Works home"><span>[LOGO] Cartronix</span></a>
+    <ul class="navbar_menu">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#services">Tires &amp; Wheels</a></li>
+      <li><a href="#services">Tesla</a></li>
+      <li><a href="#builds">Builds</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#quote">Contact</a></li>
+    </ul>
+    <div class="navbar_ctas">
+      <a href="#quote" class="navbar_phone"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>000 000-0000</a>
+      <a href="#quote" class="button is-small">Request a Quote</a>
+      <button class="navbar_burger" type="button" aria-label="Open menu"><i></i><i></i><i></i></button>
+    </div>
+  </div></div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="section_hero on-steel" data-section>
+  <img class="hero_bg" src="https://images.pexels.com/photos/3894030/pexels-photo-3894030.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=2000" alt="" onerror="this.remove()">
+  <div class="hero_overlay" aria-hidden="true"></div>
+  <span class="wf-note">section_hero &middot; bg image = &lt;img&gt; (object-fit: cover) + gradient overlay div, eager load (LCP) &middot; H1 lives here only</span>
+  <div class="padding-global"><div class="container-large hero_grid">
+    <div class="hero_content">
+      <h1 class="heading-style-h1">Houston Auto Repair, Tires, Wheels &amp; Custom Upgrades</h1>
+      <p class="hero_lede">Whether your vehicle needs maintenance, repairs, new tires, or a complete upgrade, Cartronix Auto Works is ready to help. Daily drivers, trucks, SUVs, Jeeps and Teslas, all in one shop.</p>
+      <div class="button-group">
+        <a href="#quote" class="button">Request a Quote</a>
+        <a href="#quote" class="button is-secondary"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Call 000 000-0000</a>
+      </div>
+      <div class="hero_trust" aria-label="Trust signals">
+        <div class="trust_item"><span class="trust_value">4.9 &#9733;</span><span class="trust_label">Google rating, 120+ reviews</span></div>
+        <div class="trust_item"><span class="trust_value">[XX] yrs</span><span class="trust_label">Serving Houston drivers</span></div>
+        <div class="trust_item"><span class="trust_value">[ASE?]</span><span class="trust_label">Certified technicians</span></div>
+        <div class="trust_item"><span class="trust_value">[WARRANTY]</span><span class="trust_label">Parts &amp; labor warranty</span></div>
+      </div>
+    </div>
+      </div></div>
+</section>
+
+<!-- ============ SERVICE STRIP ============ -->
+<div class="section_strip" aria-hidden="true">
+  <div class="strip_track">
+    <span>Repairs</span><span>Maintenance</span><span>Tires</span><span>Wheels</span><span>Alignments</span><span>Lift Kits</span><span>Tint</span><span>Tesla Service</span>
+    <span>Repairs</span><span>Maintenance</span><span>Tires</span><span>Wheels</span><span>Alignments</span><span>Lift Kits</span><span>Tint</span><span>Tesla Service</span>
+  </div>
+</div>
+
+<!-- ============ INTRO ============ -->
+<section class="section_intro" id="about" data-section>
+  <span class="wf-note">section_intro &middot; 2-col grid &rarr; stacks at Tablet</span>
+  <div class="padding-global padding-section"><div class="container-large intro_grid">
+    <div class="intro_text">
+      <h2 class="heading-style-h2">Your Vehicle Should Work for the Way You Drive</h2>
+      <p class="text-muted max-w">You shouldn&rsquo;t have to visit three different shops to take care of one vehicle. Whatever brought you here, you want a shop that understands what you need, explains your options, and gets the work done right.</p>
+      <p class="max-w">That&rsquo;s what Cartronix Auto Works is here to do.</p>
+      <div><a href="#quote" class="button">Tell Us What Your Vehicle Needs</a></div>
+    </div>
+    <ul class="symptoms" aria-label="Common reasons customers come in">
+      <li class="symptom"><span class="symptom_tag">Tires</span>Maybe you need new tires.</li>
+      <li class="symptom"><span class="symptom_tag">Steering</span>Maybe your steering feels off.</li>
+      <li class="symptom"><span class="symptom_tag">Brakes</span>Maybe your brakes are making noise.</li>
+      <li class="symptom"><span class="symptom_tag">Upgrade</span>Or your truck, Jeep, or Tesla is ready for an upgrade.</li>
+    </ul>
+  </div></div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="section_services" id="services" data-section>
+  <span class="wf-note">section_services &middot; CMS Collection List: Services (6 items) &middot; card = component</span>
+  <div class="padding-global padding-section"><div class="container-large">
+    <div class="section_head">
+      <div>
+        <h2 class="heading-style-h2">Everything Your Vehicle Needs Under One Roof</h2>
+      </div>
+      <a href="#services" class="text-link">View all services</a>
+    </div>
+    <div class="services_grid">
+      <article class="service_card">
+        <div class="ph"><span>PHOTO: tire mounting / wheel close-up</span><img src="https://images.pexels.com/photos/3807167/pexels-photo-3807167.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Tires stacked in a tire shop" loading="lazy" onerror="this.remove()"></div>
+        <div class="service_body">
+          <h3 class="heading-style-h3">Tires &amp; Wheels</h3>
+          <p>Replacement tires or a whole new look. We help you find the right fit for your vehicle, driving needs, and style.</p>
+          <a href="#quote" class="text-link">Explore tires &amp; wheels</a>
+        </div>
+      </article>
+      <article class="service_card">
+        <div class="ph"><span>PHOTO: technician under a lift</span><img src="https://images.pexels.com/photos/3855771/pexels-photo-3855771.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Mechanic working on a car" loading="lazy" onerror="this.remove()"></div>
+        <div class="service_body">
+          <h3 class="heading-style-h3">Auto Repair &amp; Maintenance</h3>
+          <p>From brakes and oil changes to diagnostics and general repair, we help keep you moving.</p>
+          <a href="#quote" class="text-link">View our services</a>
+        </div>
+      </article>
+      <article class="service_card">
+        <div class="ph"><span>PHOTO: alignment rack</span><img src="https://images.pexels.com/photos/4022545/pexels-photo-4022545.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Disc brake and suspension in the service bay" loading="lazy" onerror="this.remove()"></div>
+        <div class="service_body">
+          <h3 class="heading-style-h3">Alignments &amp; Suspension</h3>
+          <p>Uneven tire wear, pulling, or loose steering can point to alignment or suspension issues. We get it driving right.</p>
+          <a href="#quote" class="text-link">Request a quote</a>
+        </div>
+      </article>
+      <article class="service_card">
+        <div class="ph"><span>PHOTO: lifted truck / Jeep build</span><img src="https://images.pexels.com/photos/33395993/pexels-photo-33395993.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Off-road pickup truck kicking up dust" loading="lazy" onerror="this.remove()"></div>
+        <div class="service_body">
+          <h3 class="heading-style-h3">Lift Kits &amp; Custom Upgrades</h3>
+          <p>Lift kits, suspension upgrades, wheels, tires and accessories to build the vehicle you want to drive.</p>
+          <a href="#quote" class="text-link">Talk to us about your build</a>
+        </div>
+      </article>
+      <article class="service_card">
+        <div class="ph"><span>PHOTO: tint install</span><img src="https://images.pexels.com/photos/17784756/pexels-photo-17784756.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Black sedan with tinted windows" loading="lazy" onerror="this.remove()"></div>
+        <div class="service_body">
+          <h3 class="heading-style-h3">Tint &amp; Auto Glass</h3>
+          <p>Window tint, ceramic tint, and automotive glass replacement for comfort, looks, and protection.</p>
+          <a href="#quote" class="text-link">Get a quote</a>
+        </div>
+      </article>
+      <article class="service_card is-tesla on-steel">
+        <div class="ph"><span>PHOTO: Tesla in the bay</span><img src="https://images.pexels.com/photos/15089585/pexels-photo-15089585.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="White Tesla Model Y" loading="lazy" onerror="this.remove()"></div>
+        <div class="service_body">
+          <h3 class="heading-style-h3">Tesla Services</h3>
+          <p>Select Tesla services: tires, alignments, brakes, ceramic tint, and lowering kits.</p>
+          <a href="#quote" class="text-link">Explore Tesla services</a>
+        </div>
+      </article>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ WHY CHOOSE US ============ -->
+<section class="section_why" data-section>
+  <span class="wf-note">section_why &middot; left column sticky on Desktop only</span>
+  <div class="padding-global padding-section"><div class="container-large why_grid">
+    <div class="why_head">
+      <h2 class="heading-style-h2">One Shop. More Ways to Take Care of Your Vehicle.</h2>
+      <p class="text-muted max-w">Your vehicle is an investment. You deserve a shop that treats it that way.</p>
+    </div>
+    <ul class="why_list">
+      <li class="why_item"><h3 class="heading-style-h3">Experienced Service</h3><p>Everyday vehicles to customized trucks, SUVs, Jeeps, and Teslas.</p></li>
+      <li class="why_item"><h3 class="heading-style-h3">Quality Work</h3><p>We do the job correctly and recommend solutions that make sense for your vehicle.</p></li>
+      <li class="why_item"><h3 class="heading-style-h3">Straight Answers</h3><p>You don&rsquo;t need to be an automotive expert to understand what your vehicle needs. We make it clear.</p></li>
+      <li class="why_item"><h3 class="heading-style-h3">One-Stop Convenience</h3><p>Repairs, maintenance, tires, wheels, alignments, suspension, upgrades, and tint in one place.</p></li>
+      <li class="why_item"><h3 class="heading-style-h3">Drivers &amp; Enthusiasts</h3><p>Reliable transportation or a one-of-a-kind build, we can help with both.</p></li>
+    </ul>
+  </div></div>
+</section>
+
+<!-- ============ BUILDS (recommended addition) ============ -->
+<section class="section_builds on-steel" id="builds" data-section>
+  <span class="wf-note">NEW section (not in copy doc) &middot; CMS: Builds &middot; limit 4 on Home</span>
+  <div class="padding-global padding-section"><div class="container-large">
+    <div class="section_head">
+      <div>
+        <h2 class="heading-style-h2">Out of the Bay</h2>
+        <p class="text-muted max-w">Real vehicles from the shop. Wheels, lifts, tint and Tesla work.</p>
+      </div>
+      <a href="#builds" class="button is-secondary is-small">See all builds</a>
+    </div>
+    <div class="builds_grid">
+      <div class="build_tile"><div class="ph"><span>BUILD PHOTO 1</span><img src="https://images.pexels.com/photos/3248777/pexels-photo-3248777.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Black Jeep Wrangler on a dirt road" loading="lazy" onerror="this.remove()"></div><span class="build_meta">[YEAR MAKE MODEL]</span><span class="build_title">Lift + wheels &amp; tires</span></div>
+      <div class="build_tile"><div class="ph"><span>BUILD PHOTO 2</span><img src="https://images.pexels.com/photos/17110820/pexels-photo-17110820.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Black aftermarket wheel on a modern car" loading="lazy" onerror="this.remove()"></div><span class="build_meta">[YEAR MAKE MODEL]</span><span class="build_title">Wheel package</span></div>
+      <div class="build_tile"><div class="ph"><span>BUILD PHOTO 3</span><img src="https://images.pexels.com/photos/9300916/pexels-photo-9300916.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="White Tesla Model 3" loading="lazy" onerror="this.remove()"></div><span class="build_meta">[TESLA MODEL]</span><span class="build_title">Lowering + ceramic tint</span></div>
+      <div class="build_tile"><div class="ph"><span>BUILD PHOTO 4</span><img src="https://images.pexels.com/photos/9648649/pexels-photo-9648649.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Gold wheel on a black car" loading="lazy" onerror="this.remove()"></div><span class="build_meta">[YEAR MAKE MODEL]</span><span class="build_title">Leveling kit</span></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="section_process" data-section>
+  <span class="wf-note">section_process &middot; 3-col &rarr; stacks at Mobile Landscape</span>
+  <div class="padding-global padding-section"><div class="container-large">
+    <div class="section_head"><div>
+      <h2 class="heading-style-h2">Getting Started Is Simple</h2>
+    </div></div>
+    <div class="process_grid">
+      <div class="process_step"><span class="process_num">01</span><h3 class="heading-style-h3">Tell Us What You Need</h3><p>Call the shop or send a quote request with your vehicle and what you need help with.</p></div>
+      <div class="process_step"><span class="process_num">02</span><h3 class="heading-style-h3">Review Your Options</h3><p>We explain the service, repair, product, or upgrade that fits your vehicle.</p></div>
+      <div class="process_step"><span class="process_num">03</span><h3 class="heading-style-h3">Get Back on the Road</h3><p>We do the work and you drive away knowing it was done right.</p></div>
+    </div>
+    <div class="button-group process_cta">
+      <a href="#quote" class="button">Request a Quote</a>
+      <a href="#quote" class="button is-secondary">Call 000 000-0000</a>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="section_reviews" data-section>
+  <span class="wf-note">section_reviews &middot; SAMPLE reviews for mockup: replace with verified Google reviews (or embed widget) before launch</span>
+  <div class="padding-global padding-section"><div class="container-large">
+    <div class="section_head">
+      <div>
+        <h2 class="heading-style-h2">Houston Drivers Trust Cartronix</h2>
+      </div>
+      <div class="rating_badge">
+        <span class="rating_score">4.9</span>
+        <div><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="text-muted" style="font-size:.85rem">120+ Google reviews</div></div>
+      </div>
+    </div>
+    <div class="reviews_grid">
+      <figure class="review_card" style="margin:0"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote class="review_text" style="margin:0">&ldquo;Brought my F-150 in for a leveling kit and new all-terrains. They walked me through the options, gave me a clear price, and had it done the same day. Truck looks and drives great.&rdquo;</blockquote><figcaption class="review_author"><span>Marcus T.</span><span>Sample review</span></figcaption></figure>
+      <figure class="review_card" style="margin:0"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote class="review_text" style="margin:0">&ldquo;My Model 3 was eating through the inside edge of the tires. They did an alignment and explained exactly what was going on. Straight answers, no upselling.&rdquo;</blockquote><figcaption class="review_author"><span>Priya S.</span><span>Sample review</span></figcaption></figure>
+      <figure class="review_card" style="margin:0"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote class="review_text" style="margin:0">&ldquo;Brakes were grinding on my way to work. They got me in quickly, showed me the worn pads, and had me back on the road that afternoon. This is my shop now.&rdquo;</blockquote><figcaption class="review_author"><span>Daniel R.</span><span>Sample review</span></figcaption></figure>
+    </div>
+    <div style="margin-top:1.75rem"><a href="#top" class="text-link">Read more Google reviews</a></div>
+  </div></div>
+</section>
+
+<!-- ============ BRAND ============ -->
+<section class="section_brand" data-section>
+  <span class="wf-note">section_brand &middot; image left / text right</span>
+  <div class="padding-global padding-section"><div class="container-large brand_grid">
+    <div class="ph"><span>PHOTO: team or shop exterior with signage &middot; 5:4</span><img src="https://images.pexels.com/photos/37163499/pexels-photo-37163499.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Sports car on a lift in the repair shop" loading="lazy" onerror="this.remove()"></div>
+    <div class="brand_text">
+      <h2 class="heading-style-h2">Your Vehicle. Your Needs. A Shop That Can Help.</h2>
+      <p class="brand_lead">Some customers come in because something needs repair. Others need tires, maintenance, or an alignment. Some have a vision for how they want their vehicle to look and perform.</p>
+      <p>Our job is to listen, understand what you&rsquo;re trying to accomplish, and find the right way forward. Maintaining it, repairing it, or making it your own, Cartronix Auto Works is here to help.</p>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ QUOTE FORM ============ -->
+<section class="section_quote on-steel" id="quote" data-section>
+  <img class="quote_bg" src="https://images.pexels.com/photos/4489715/pexels-photo-4489715.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=2000" alt="" loading="lazy" onerror="this.remove()">
+  <div class="quote_overlay" aria-hidden="true"></div>
+  <span class="wf-note">section_quote &middot; bg &lt;img&gt; + overlay div &middot; Webflow native Form &middot; Service select prefilled via ?service= param (custom code)</span>
+  <div class="padding-global padding-section"><div class="container-large quote_grid">
+    <div class="quote_info">
+      <h2 class="heading-style-h2">What Does Your Vehicle Need?</h2>
+      <p>Tell us what you drive and what you need help with. We&rsquo;ll follow up to talk through options.</p>
+      <div class="quote_phone">
+        <span class="quote_hours">Prefer to talk?</span>
+        <strong>000 000-0000</strong>
+        <span class="quote_hours">Mon to Fri 8 AM to 6 PM &middot; Sat 8 AM to 2 PM</span>
+      </div>
+    </div>
+    <form class="quote_form" id="quote-form" novalidate>
+      <div class="field is-half"><label for="q-name">Name</label><input id="q-name" name="name" autocomplete="name" required></div>
+      <div class="field is-half"><label for="q-phone">Phone number</label><input id="q-phone" name="phone" type="tel" autocomplete="tel" required></div>
+      <div class="field"><label for="q-email">Email <em>(optional)</em></label><input id="q-email" name="email" type="email" autocomplete="email"></div>
+      <div class="field is-third"><label for="q-year">Vehicle year</label><input id="q-year" name="year" inputmode="numeric" placeholder="2021"></div>
+      <div class="field is-third"><label for="q-make">Make</label><input id="q-make" name="make" placeholder="Ford"></div>
+      <div class="field is-third"><label for="q-model">Model</label><input id="q-model" name="model" placeholder="F-150"></div>
+      <div class="field is-half"><label for="q-service">Service needed</label>
+        <select id="q-service" name="service">
+          <option>Tires</option><option>Wheels</option><option>Auto Repair</option><option>Brakes</option><option>Oil Change / Maintenance</option><option>Alignment</option><option>Suspension</option><option>Lift Kit</option><option>Window Tint</option><option>Auto Glass</option><option>Tesla Service</option><option>Vehicle Upgrade</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field is-half"><label for="q-tire">Current tire size <em>(optional)</em></label><input id="q-tire" name="tire" placeholder="275/55R20"><span class="field_hint">Printed on the tire sidewall</span></div>
+      <div class="field"><label for="q-msg">What would you like help with?</label><textarea id="q-msg" name="message" placeholder="Pulling to the right at highway speed, and I'd like a quote on new all-terrains."></textarea></div>
+      <div class="form_footer">
+        <p class="form_note">Submitting doesn&rsquo;t lock in pricing. Final pricing depends on inspection, parts, and fitment.</p>
+        <button type="submit" class="button">Request My Quote</button>
+      </div>
+      <p class="form_success" id="form-success" hidden>Mockup only. In Webflow this shows the form&rsquo;s success state and sends the submission to the shop&rsquo;s inbox.</p>
+    </form>
+  </div></div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section_faq" data-section>
+  <span class="wf-note">section_faq &middot; accordion (Webflow Dropdown or IX2) &middot; add FAQPage schema</span>
+  <div class="padding-global padding-section"><div class="container-large faq_grid">
+    <div class="faq_head">
+      <h2 class="heading-style-h2">Frequently Asked Questions</h2>
+      <p class="text-muted">Don&rsquo;t see your question? Call <span class="fill">000 000-0000</span>.</p>
+    </div>
+    <div class="faq_list">
+      <details class="faq_item" open><summary>What services does Cartronix Auto Works offer?</summary><div class="faq_answer"><p>Tires, wheels, general auto repair, brakes, oil changes, alignments, suspension service, lift kits, vehicle upgrades, window tint, automotive glass, and select Tesla services.</p><p>Not sure if we offer what you need? Give us a call.</p></div></details>
+      <details class="faq_item"><summary>Do I need an appointment?</summary><div class="faq_answer"><p>Availability depends on the service. Call ahead and we&rsquo;ll help you find the best time to bring your vehicle in.</p></div></details>
+      <details class="faq_item"><summary>Can you help me choose tires or wheels?</summary><div class="faq_answer"><p>Yes. Tell us what you drive and what you want from your tires or wheels, and we&rsquo;ll walk you through the options.</p></div></details>
+      <details class="faq_item"><summary>Do you work on customized trucks and SUVs?</summary><div class="faq_answer"><p>Yes. We offer wheels, tires, suspension services, lift kits, accessories, and other upgrades.</p></div></details>
+      <details class="faq_item"><summary>Do you service Teslas?</summary><div class="faq_answer"><p>We provide select Tesla services including tires, alignments, brake service, ceramic tint, and lowering kits.</p></div></details>
+      <details class="faq_item"><summary>Can I request a quote online?</summary><div class="faq_answer"><p>Yes. Send the Request a Quote form with your vehicle information and the service you need.</p></div></details>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="section_cta" data-section>
+  <span class="wf-note">section_cta &middot; global component (reuse on all pages)</span>
+  <div class="padding-global"><div class="container-large cta_inner">
+    <span class="cta_tagline">Take care of it. Upgrade it. Make it yours.</span>
+    <h2 class="heading-style-h2">Ready to Take Care of Your Vehicle?</h2>
+    <p>Whether something needs to be fixed, replaced, maintained, or upgraded, Cartronix Auto Works is ready to help.</p>
+    <div class="button-group">
+      <a href="#quote" class="button">Request a Quote</a>
+      <a href="#quote" class="button is-secondary">Call 000 000-0000</a>
+    </div>
+  </div></div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" data-section>
+  <span class="wf-note">Footer component (symbol) &middot; NAP must match Google Business Profile exactly</span>
+  <div class="padding-global"><div class="container-large">
+    <div class="footer_grid">
+      <div>
+        <div class="footer_logo ph"><span>[LOGO] Cartronix</span></div>
+        <p>Auto Repair &middot; Tires &middot; Wheels &middot; Alignments &middot; Suspension &middot; Lift Kits &middot; Tint &middot; Auto Glass &middot; Tesla Services</p>
+      </div>
+      <div>
+        <h3>Visit</h3>
+        <ul><li>1234 Sample Street</li><li>Houston, TX 77000</li><li>000 000-0000</li><li>Mon to Fri: 8 AM to 6 PM</li><li>Sat: 8 AM to 2 PM</li><li>Sun: Closed</li></ul>
+      </div>
+      <div>
+        <h3>Quick links</h3>
+        <ul><li><a href="#top">Home</a></li><li><a href="#services">Services</a></li><li><a href="#services">Tires &amp; Wheels</a></li><li><a href="#services">Tesla Services</a></li><li><a href="#about">About</a></li><li><a href="#quote">Request a Quote</a></li><li><a href="#quote">Contact</a></li></ul>
+      </div>
+    </div>
+    <div class="footer_bottom">
+      <span>&copy; 2026 Cartronix Auto Works. Take Care of It. Upgrade It. Make It Yours.</span>
+      <span>Not affiliated with Tesla, Inc.</span>
+    </div>
+  </div></div>
+</footer>
+
+<!-- Mobile sticky action bar -->
+<nav class="mobile_bar" aria-label="Quick actions">
+  <a href="#quote" class="button is-secondary">Call</a>
+  <a href="#quote" class="button">Get a Quote</a>
+</nav>
+
+<button class="notes-toggle" type="button" id="notes-toggle" aria-pressed="false">Show Webflow notes</button>
+
+<script>
+(function(){
+  var btn=document.getElementById('notes-toggle');
+  function set(on){document.body.classList.toggle('show-notes',on);btn.setAttribute('aria-pressed',on);btn.textContent=on?'Hide Webflow notes':'Show Webflow notes';try{localStorage.setItem('cx-notes',on?'1':'0')}catch(e){}}
+  var saved=false;try{saved=localStorage.getItem('cx-notes')==='1'}catch(e){}
+  set(saved);
+  btn.addEventListener('click',function(){set(!document.body.classList.contains('show-notes'))});
+  var form=document.getElementById('quote-form');
+  form.addEventListener('submit',function(e){e.preventDefault();document.getElementById('form-success').hidden=false});
+})();
+</script>
+
+</body>
+</html>
