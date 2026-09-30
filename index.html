@@ -603,15 +603,9 @@ body.show-notes [data-section]{outline:1px dashed var(--note);outline-offset:-1p
   <a href="#quote" class="button">Get a Quote</a>
 </nav>
 
-<button class="notes-toggle" type="button" id="notes-toggle" aria-pressed="false">Show Webflow notes</button>
 
 <script>
 (function(){
-  var btn=document.getElementById('notes-toggle');
-  function set(on){document.body.classList.toggle('show-notes',on);btn.setAttribute('aria-pressed',on);btn.textContent=on?'Hide Webflow notes':'Show Webflow notes';try{localStorage.setItem('cx-notes',on?'1':'0')}catch(e){}}
-  var saved=false;try{saved=localStorage.getItem('cx-notes')==='1'}catch(e){}
-  set(saved);
-  btn.addEventListener('click',function(){set(!document.body.classList.contains('show-notes'))});
   var form=document.getElementById('quote-form');
   form.addEventListener('submit',function(e){e.preventDefault();document.getElementById('form-success').hidden=false});
 })();
