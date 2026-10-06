@@ -344,3 +344,6 @@ p{margin:0}
 .navbar_menu a,.navbar_phone,.button{white-space:nowrap}
 @media (min-width:992px) and (max-width:1479px){.navbar_phone{display:none}.navbar_menu{gap:1.5rem}}
 @media (min-width:992px){.quote_grid.is-form-left{grid-template-columns:1.2fr .8fr}}
+.page_hero.has-image.is-left .page_hero_overlay{background:linear-gradient(90deg,#0B0D10 0%,rgba(11,13,16,.94) 34%,rgba(11,13,16,.6) 58%,rgba(11,13,16,.25) 100%),linear-gradient(0deg,#0B0D10 0%,rgba(11,13,16,0) 25%)}
+.page_hero.has-image.is-left .page_hero_inner{margin-left:0;max-width:640px}
+@media (max-width:991px){.page_hero.has-image.is-left .page_hero_overlay{background:linear-gradient(0deg,#0B0D10 0%,rgba(11,13,16,.85) 50%,rgba(11,13,16,.6) 100%)}}
